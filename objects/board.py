@@ -12,7 +12,7 @@ class Board:
     def __init__(self, n, m, null):
         self.size = (n, m)
         self.null = null
-        self.empty = [[self.null] * m for i in xrange(n)]
+        self.empty = [[self.null] * m for i in range(n)]
         self.state = self.empty
 
     def update(self, player, move):
@@ -20,8 +20,8 @@ class Board:
         Takes in a Player object and a move as a
         list of integer tuples that represent the piece.
         """
-        for row in xrange(len(self.state)):
-            for col in xrange(len(self.state[1])):
+        for row in range(len(self.state)):
+            for col in range(len(self.state[1])):
                 if (col, row) in move:
                     self.state[row][col] = player.label
 
@@ -38,9 +38,9 @@ class Board:
         any pieces that have already been placed on the board.
         """
         if False in [(self.state[j][i] == self.null) for (i, j) in move]:
-            return (True)
+            return True
         else:
-            return (False)
+            return False
 
     def corner(self, player, move):
         """
@@ -98,26 +98,26 @@ class Board:
         if not fancy:
             print_board(self.state)
         else:
-            fancy_board(self, num)
+            fancy_board(self)
 
 
 def print_board(board):
     n = 2
-    assert (len(set([len(board[i]) for i in xrange(len(board))])) == 1)
-    print ' ' * n,
+    assert (len(set([len(board[i]) for i in range(len(board))])) == 1)
+    print(' ' * n, end=' ')
     for i in range(len(board[1])):
-        print str(i) + ' ' * (n - len(str(i))),
-    print
+        print(str(i) + ' ' * (n - len(str(i))), end=' ')
+    print()
     for i, row in enumerate(board):
-        print str(i) + ' ' * (n - len(str(i))), (' ' * n).join(row)
+        print(str(i) + ' ' * (n - len(str(i))), (' ' * n).join(row))
 
 
-# This function uses MatplotLib to create a fancy image
-# of the board that opens in a separate window.
-
-def fancy_board(board, num):
+# This function uses MatplotLib to create a fancy image of the board that opens in a separate window.
+def fancy_board(board):
     a_points = []
     b_points = []
+    c_points = []
+    d_points = []
 
     for y in enumerate(board.state):
         for x in enumerate(y[1]):
@@ -125,18 +125,28 @@ def fancy_board(board, num):
                 a_points.append((x[0], (board.size[0] - 1) - y[0]))
             if x[1] == "B":
                 b_points.append((x[0], (board.size[0] - 1) - y[0]))
+            if x[1] == "C":
+                c_points.append((x[0], (board.size[0] - 1) - y[0]))
+            if x[1] == "D":
+                d_points.append((x[0], (board.size[0] - 1) - y[0]))
 
     # fig = plt.figure(frameon=False)
     ax = plt.subplot(111, xlim=(0, board.size[0]), ylim=(0, board.size[1]))
 
-    for i in xrange(board.size[0] + 1):
-        for j in xrange(board.size[1] + 1):
+    for i in range(board.size[0] + 1):
+        for j in range(board.size[1] + 1):
             polygon = plt.Polygon([[i, j], [i + 1, j], [i + 1, j + 1], [i, j + 1], [i, j]])
             if (i, j) in a_points:
                 polygon.set_facecolor('red')
                 ax.add_patch(polygon)
             elif (i, j) in b_points:
                 polygon.set_facecolor('blue')
+                ax.add_patch(polygon)
+            elif (i, j) in c_points:
+                polygon.set_facecolor('green')
+                ax.add_patch(polygon)
+            elif (i, j) in d_points:
+                polygon.set_facecolor('yellow')
                 ax.add_patch(polygon)
             else:
                 polygon.set_facecolor('lightgrey')
@@ -146,6 +156,5 @@ def fancy_board(board, num):
         axis.set_major_formatter(plt.NullFormatter())
         axis.set_major_locator(plt.NullLocator())
 
-    plt.savefig("random" + str(num) + ".png")
+    # plt.savefig("random" + str(num) + ".png")
     plt.show()
-    # return ax

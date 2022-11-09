@@ -1,4 +1,4 @@
-from shape import Shape
+from .shape import Shape
 
 
 # The highlighted point is the generation point and the

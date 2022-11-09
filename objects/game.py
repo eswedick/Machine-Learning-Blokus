@@ -41,7 +41,7 @@ class Game:
         not been won, and the name of the
         player if it has been won.
         """
-        return ("None")
+        return "None"
 
     def valid_move(self, player, move):
         """
@@ -64,7 +64,7 @@ class Game:
             max_y = (self.board.size[0] - 1)
             starts = [(0, 0), (max_y, max_x), (0, max_x), (max_y, 0)]
 
-            for i in xrange(len(self.players)):
+            for i in range(len(self.players)):
                 (self.players[i]).add_pieces(self.all_pieces)
                 (self.players[i]).start_corner(starts[i])
 
@@ -72,25 +72,24 @@ class Game:
         # let current player perform a move
         if self.winner() == "None":
             current = self.players[0]
-            print "Current player: " + current.name
-            proposal = current.do_move(self)
-            if proposal == None:
+            print("Current player: " + current.name)
+            proposal = current.do_move(self, current.weights)
+            if proposal is None:
                 # move on to next player, increment rounds
-                first = (self.players).pop(0)
+                first = self.players.pop(0)
                 self.players = self.players + [first]
                 self.rounds += 1
-
 
             # ensure that the proposed move is valid
             elif self.valid_move(current, proposal.points):
                 # update the board with the move
-                (self.board).update(current, proposal.points)
+                self.board.update(current, proposal.points)
                 # let the player update itself accordingly
                 current.update_player(proposal, self.board)
                 # remove the piece that was played from the player
                 current.remove_piece(proposal)
                 # place the player at the back of the queue
-                first = (self.players).pop(0)
+                first = self.players.pop(0)
                 self.players = self.players + [first]
                 # increment the number of rounds just played
                 self.rounds += 1
@@ -100,4 +99,4 @@ class Game:
                 raise Exception("Invalid move by " + current.name + ".")
 
         else:
-            print "Game over! And the winner is: " + self.winner()
+            print("Game over! And the winner is: " + self.winner())

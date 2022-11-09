@@ -1,4 +1,6 @@
 import math
+
+
 # Here we implement the Shape class. Using math and geometrical formulae,
 # we were able to implement rotate and flip functions that work for all 21 shapes
 # and greatly reduced the length of our code.
@@ -9,6 +11,10 @@ import math
 
 class Shape(object):
     def __init__(self):
+        self.corners = None
+        self.points = None
+        self.points_map = None
+        self.refpt = None
         self.ID = "None"
         self.size = 1
 
@@ -36,10 +42,10 @@ class Shape(object):
         assert (degrees in [0, 90, 180, 270])
 
         def rotate_this(p):
-            return (rotate_p(p, self.refpt, degrees))
+            return rotate_p(p, self.refpt, degrees)
 
-        self.points = map(rotate_this, self.points)
-        self.corners = map(rotate_this, self.corners)
+        self.points = list(map(rotate_this, self.points))
+        self.corners = list(map(rotate_this, self.corners))
 
     def flip(self, orientation):
         """
@@ -53,38 +59,42 @@ class Shape(object):
             x1 = self.refpt[0]
             x2 = p[0]
             x1 = (x1 - (x2 - x1))
-            return (x1, p[1])
+            return x1, p[1]
 
         def no_flip(p):
             return p
 
         # flip the piece horizontally
         if orientation == "h":
-            self.points = map(flip_h, self.points)
-            self.corners = map(flip_h, self.corners)
+            self.points = list(map(flip_h, self.points))
+            self.corners = list(map(flip_h, self.corners))
         # flip the piece vertically
         elif orientation == "None":
-            self.points = map(no_flip, self.points)
-            self.corners = map(no_flip, self.corners)
+            self.points = list(map(no_flip, self.points))
+            self.corners = list(map(no_flip, self.corners))
         else:
             raise Exception("Invalid orientation.")
 
 
-def rotate_x((x, y), (refx, refy), deg):
+def rotate_x(xxx_todo_changeme, xxx_todo_changeme1, deg):
     """
     Returns the new x value of a point (x, y)
     rotated about the point (refx, refy) by
     deg degrees clockwise.
     """
+    (x, y) = xxx_todo_changeme
+    (refx, refy) = xxx_todo_changeme1
     return (math.cos(math.radians(deg)) * (x - refx)) + (math.sin(math.radians(deg)) * (y - refy)) + refx
 
 
-def rotate_y((x, y), (refx, refy), deg):
+def rotate_y(xxx_todo_changeme2, xxx_todo_changeme3, deg):
     """
     Returns the new y value of a point (x, y)
     rotated about the point (refx, refy) by
     deg degrees clockwise.
     """
+    (x, y) = xxx_todo_changeme2
+    (refx, refy) = xxx_todo_changeme3
     return (- math.sin(math.radians(deg)) * (x - refx)) + (math.cos(math.radians(deg)) * (y - refy)) + refy
 
 
